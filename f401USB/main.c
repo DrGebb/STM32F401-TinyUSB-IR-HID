@@ -75,8 +75,6 @@ int main(void) {
 
     // 3. Create task
     Task_Main_id = osThreadNew(Task_Main, NULL, &Task_Main_att);
-
-    Task_NEC_id = osThreadNew(Task_NEC, NULL, &Task_NEC_att);
     osKernelStart();
 
     while (1) {

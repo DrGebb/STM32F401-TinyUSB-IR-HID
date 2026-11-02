@@ -86,6 +86,7 @@ void TIM3_IRQHandler(void) {
                 if (hNEC.HasCode) {
                     if (hNEC.Repeat < 255) hNEC.Repeat++;
                     hNEC.RepeatReady = 1;
+                    if (hNEC.Callback) hNEC.Callback();
                 }
                 hNEC.status = NEC_IDLE;
             }
@@ -112,6 +113,7 @@ void TIM3_IRQHandler(void) {
                         hNEC.RepeatReady = 0;
                         hNEC.HasCode = 1;
                         hNEC.Ready = 1;
+                        if (hNEC.Callback) hNEC.Callback();
                     }
                     hNEC.status = NEC_IDLE;
                 }
@@ -133,8 +135,14 @@ NEC_Event_t NEC_Read(uint16_t *addr, uint8_t *cmd){
 
     NEC_Event_t evt;
 
-    if (hNEC.Ready)             { hNEC.Ready = 0;       evt = NEC_EVT_NEW; }
-    else if (hNEC.RepeatReady)  { hNEC.RepeatReady = 0; evt = NEC_EVT_REPEAT; }
+    if(hNEC.Ready){
+        hNEC.Ready = 0;
+        evt = NEC_EVT_NEW;
+    }
+    else if(hNEC.RepeatReady){
+        hNEC.RepeatReady = 0;
+        evt = NEC_EVT_REPEAT;
+    }
     else return NEC_EVT_NONE;
 
     uint32_t raw = hNEC.Code;
@@ -159,4 +167,12 @@ uint16_t NEC_GetAddress(void){
 
     // standard NEC: addr + ~addr -> 8-bit address; extended NEC: full 16-bit address
     return (a == (uint8_t)~a_inv) ? a : (uint16_t)(raw & 0xFFFF);
+}
+
+void NEC_SetCallback(void (*cb)(void)) {
+     hNEC.Callback = cb;
+}
+
+void NEC_Flush(void) {
+     hNEC.Ready = 0; hNEC.RepeatReady = 0;
 }

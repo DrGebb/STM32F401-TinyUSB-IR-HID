@@ -24,6 +24,7 @@ project:
         - file: lib/src/utils_LL.c
         - file: lib/src/ir_nec.c
         - file: lib/src/rtos.c
+        - file: ./lib/src/remote_actions.c
 
 
     - group: USB

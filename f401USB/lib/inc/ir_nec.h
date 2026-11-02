@@ -30,14 +30,15 @@ typedef enum {
 
 typedef struct {
     
-    uint16_t Last;      // last captured counter value
+    uint16_t Last;             // last captured counter value
     uint8_t  BitCount;
-    uint32_t Buffer;    // frame being received
-    uint32_t Code;      // last valid frame
-    uint8_t  Repeat;    // repeat frames since the last valid frame
+    uint32_t Buffer;           // frame being received
+    uint32_t Code;             // last valid frame
+    uint8_t  Repeat;           // repeat frames since the last valid frame
     uint8_t  HasCode;
-    uint8_t  Ready;     // new valid frame not read yet
+    uint8_t  Ready;            // new valid frame not read yet
     uint8_t  RepeatReady;
+    void  (*Callback)(void);   // called from ISR on new frame / repeat
     Status_NEC_t status;
 
 } NEC_Handle_t;
@@ -47,5 +48,8 @@ uint8_t NEC_GetRepeatCount(void);
 uint16_t NEC_GetAddress(void);
 
 NEC_Event_t NEC_Read(uint16_t *addr, uint8_t *cmd); 
+
+void NEC_SetCallback(void (*cb)(void));
+void NEC_Flush(void);
 
 #endif
