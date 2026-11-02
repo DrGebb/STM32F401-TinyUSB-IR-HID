@@ -1,0 +1,71 @@
+# A solution is a collection of related projects that share same base configuration.
+solution:
+  created-for: CMSIS-Toolbox@2.12.0
+  cdefault: # use CMSIS-Toolbox default Compiler options
+
+  # Compilers that can be selected
+  select-compiler:
+    - compiler: AC6
+    - compiler: GCC
+    - compiler: IAR
+    - compiler: CLANG
+
+  # List of miscellaneous tool-specific controls
+  misc:
+    - for-compiler: AC6 # GDB requires DWARF 5, remove when using uVision Debugger
+      C-CPP:
+        - -gdwarf-5
+      ASM:
+        - -gdwarf-5
+
+  # List the packs that define the device and/or board.
+  packs:
+    - pack: Keil::STM32F4xx_DFP@2.17.1
+    - pack: ARM::CMSIS
+
+  # List different hardware targets that are used to deploy the solution.
+  target-types:
+    - type: STM32F401RCTx
+      device: STM32F401RCTx
+      define:
+        - CMSIS_device_header: '\"stm32f4xx.h\"'
+        - STM32F4xx
+      target-set:
+        - set:
+          images:
+            - project-context: f401USB.Debug
+          debugger:
+            name: CMSIS-DAP@pyOCD
+            clock: 10000000
+            protocol: swd
+
+  # List of different build configurations.
+  build-types:
+
+    - type: MinSize
+      link-time-optimize: true
+      debug: off
+      misc:
+        - for-compiler: AC6
+          C-CPP:
+            - -Omin
+            - -fshort-enums
+            - -fshort-wchar
+            - -ffunction-sections
+            - -fdata-sections
+          Link:
+            - --lto
+            - --merge
+
+    - type: Debug
+      debug: on
+      optimize: none
+
+    - type: Release
+      debug: off
+      optimize: size
+
+  # List related projects.
+  projects:
+    - project: f401USB/f401USB.cproject.yml
+  compiler: AC6

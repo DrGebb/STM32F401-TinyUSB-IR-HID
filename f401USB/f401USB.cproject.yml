@@ -1,0 +1,113 @@
+# A project translates into one executable or library.
+project:
+
+  add-path:
+    - ./lib/inc
+    - ./ssd1306_LL
+    - ./USB_STM32
+    - ./USB_STM32/src
+    - ./USB_STM32/src/osal
+    - ./USB_STM32/src/class/cdc
+    - ./USB_STM32/src/class/cdc/serial
+    - ./USB_STM32/src/common
+    - ./USB_STM32/src/device
+    - ./USB_STM32/src/portable/synopsys/dwc2
+
+  groups:
+    - group: Source Files
+      files:
+        - file: ./main.c
+
+    - group: Libraries
+      files:
+        - file: lib/src/delay_LL.c
+        - file: lib/src/utils_LL.c
+        - file: lib/src/ir_nec.c
+        - file: lib/src/rtos.c
+
+
+    - group: USB
+      files:
+        - file: USB_STM32/tusb.c
+        - file: USB_STM32/usb_descriptors.c
+        - file: USB_STM32/user_USB.c
+      groups:
+        - group: src
+          groups:
+            - group: class
+              files:
+                - file: USB_STM32/src/class/cdc/cdc_device.c
+                - file: USB_STM32/src/class/cdc/cdc_host.c
+                - file: USB_STM32/src/class/cdc/cdc_rndis_host.c
+                - file: USB_STM32/src/class/hid/hid_device.c
+                - file: USB_STM32/src/class/hid/hid_host.c
+            - group: common
+              files:
+                - file: USB_STM32/src/common/tusb_fifo.c
+            - group: device
+              files:
+                - file: USB_STM32/src/device/usbd.c
+                - file: USB_STM32/src/device/usbd_control.c
+            - group: portable
+              files:
+                - file: USB_STM32/src/portable/synopsys/dwc2/dcd_dwc2.c
+                - file: USB_STM32/src/portable/synopsys/dwc2/dwc2_common.c
+                - file: USB_STM32/src/portable/synopsys/dwc2/hcd_dwc2.c
+
+  
+  #
+  components:
+    - component: ARM::CMSIS:CORE
+    - component: Device:Startup
+    - component: Device:STM32Cube HAL:Common
+    - component: Device:STM32Cube HAL:Cortex
+    - component: Device:STM32Cube HAL:GPIO
+    - component: Device:STM32Cube HAL:PWR
+    - component: Device:STM32Cube HAL:RCC
+    - component: Device:STM32Cube LL:ADC
+    - component: Device:STM32Cube LL:Common
+    - component: Device:STM32Cube LL:DAC
+    - component: Device:STM32Cube LL:DMA2D
+    - component: Device:STM32Cube LL:DMA
+    - component: Device:STM32Cube LL:EXTI
+    - component: Device:STM32Cube LL:GPIO
+    - component: Device:STM32Cube LL:I2C
+    - component: Device:STM32Cube LL:PWR
+    - component: Device:STM32Cube LL:RCC
+    - component: Device:STM32Cube LL:RTC
+    - component: Device:STM32Cube LL:SPI
+    - component: Device:STM32Cube LL:TIM
+    - component: Device:STM32Cube LL:USART
+    - component: Device:STM32Cube LL:UTILS
+    - component: Device:STM32Cube Framework:Classic
+    - component: CMSIS:OS Tick:SysTick
+    - component: CMSIS:RTOS2:Keil RTX5&Source
+
+  output:
+    type:
+      - elf
+      - hex
+      - map
+      
+  packs:
+    - pack: ARM::CMSIS
+    - pack: ARM::CMSIS-RTX
+    - pack: Keil::STM32F4xx_DFP
+
+  executes:
+    - execute: AnalyzeBuild
+      run: python $input(1)$ $input(0)$ -o $output(0)$
+      input:
+        - $OutDir()$/f401USB.axf.map
+        - $ProjectDir()$/arm_map_analyzer.py
+      output:
+        - $OutDir()$/BuildReport.html
+        
+  
+    - execute: AnalyzeCallGraph
+      run: python $input(1)$ $input(0)$ -o $output(0)$
+      input:
+        - $OutDir()$/f401USB.axf
+        - $ProjectDir()$/arm_callgraph_html.py
+      output:
+        - $OutDir()$/f401USB_CallGraph.html
