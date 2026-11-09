@@ -33,7 +33,7 @@ solution:
       target-set:
         - set:
           images:
-            - project-context: f401USB.Debug
+            - project-context: f401USB.MinSize
           debugger:
             name: CMSIS-DAP@pyOCD
             clock: 10000000

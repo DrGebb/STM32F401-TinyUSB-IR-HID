@@ -4,14 +4,14 @@ cmsis-tools-environment:
   solution: ../f401USB.csolution.yml
   environment:
     path:
-      - c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.0-win32-x64/tools/pyocd
+      - c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.1-win32-x64/tools/pyocd
       - c:/Users/DrGebb/.vscode/extensions/arm.cmsis-csolution-1.72.0-win32-x64/tools/cmsis-toolbox/bin
       - c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/tools.kitware.cmake/3.31.5/bin
       - c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/tools.ninja.build.ninja/1.12.1
       - c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/tools.arm.mdk.toolbox/1.1.0/bin
       - c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/compilers.arm.armclang/6.24.0/bin
       - c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/compilers.arm.llvm.embedded/23.1.0/bin
-      - c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.0-win32-x64/tools/gdb/bin
+      - c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.1-win32-x64/tools/gdb/bin
     variables:
       AC6_TOOLCHAIN_6_24_0: c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/compilers.arm.armclang/6.24.0/bin/
       CLANG_TOOLCHAIN_23_1_0: c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/compilers.arm.llvm.embedded/23.1.0/bin/
@@ -21,12 +21,12 @@ cmsis-tools-environment:
       ninja: c:/Users/DrGebb/.vcpkg/artifacts/2139c4c6/tools.ninja.build.ninja/1.12.1/ninja.exe
   tools:
     - name: pyOCD
-      version: 0.46.0
+      version: v0.46.1
       origin: built-in
       provider:
         type: vscode-extension
         id: arm.vscode-cmsis-debugger
-      directory: c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.0-win32-x64/tools/pyocd
+      directory: c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.1-win32-x64/tools/pyocd
       manual: https://pyocd.io/docs/
     - name: CMSIS-Toolbox
       version: 2.15.0
@@ -77,5 +77,5 @@ cmsis-tools-environment:
       provider:
         type: vscode-extension
         id: arm.vscode-cmsis-debugger
-      directory: c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.0-win32-x64/tools/gdb/bin
+      directory: c:/Users/DrGebb/.vscode/extensions/arm.vscode-cmsis-debugger-1.10.1-win32-x64/tools/gdb/bin
       manual: https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain
